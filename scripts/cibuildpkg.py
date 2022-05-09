@@ -216,6 +216,7 @@ class Builder:
             if package.name == "ffmpeg":
                 configure_args += ["--arch=arm64", "--enable-cross-compile"]
             elif package.name == "vpx":
+                # darwin20 is the first darwin that supports arm64 macs
                 configure_args += ["--target=arm64-darwin20-gcc"]
             else:
                 configure_args += [
@@ -226,6 +227,8 @@ class Builder:
             if platform.system() == "Windows":
                 configure_args += ["--target=x86_64-win64-gcc"]
             if platform.system() == "Darwin":
+                # darwin13 matches the macos 10.9 target used by cibuildwheel:
+                # https://cibuildwheel.readthedocs.io/en/stable/cpp_standards/#macos-and-deployment-target-versions
                 configure_args += ["--target=x86_64-darwin13-gcc"]
 
         # build package
