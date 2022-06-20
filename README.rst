@@ -27,7 +27,6 @@ Currently FFmpeg 4.4.1 is used with the following features enabled for all platf
 - libmp3lame
 - libopencore-amrnb
 - libopencore-amrwb
-- libopenjpeg
 - libopus
 - libspeex
 - libtheora
