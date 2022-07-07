@@ -265,7 +265,24 @@ class Builder:
                     "-DCMAKE_SYSTEM_NAME=Darwin",
                     "-DCMAKE_SYSTEM_PROCESSOR=arm64",
                 ]
+        elif platform.system() == "Windows":
+            cmake_override_file = os.path.join(package_path, "ClangOverrides.txt")
+            with open(cmake_override_file, "w") as fp:
+                fp.write(
+                    """SET (CMAKE_C_FLAGS_INIT                "-Wall -std=c99")
+SET (CMAKE_C_FLAGS_DEBUG_INIT          "-g")
+SET (CMAKE_C_FLAGS_MINSIZEREL_INIT     "-Os -DNDEBUG")
+SET (CMAKE_C_FLAGS_RELEASE_INIT        "-O3 -DNDEBUG")
+SET (CMAKE_C_FLAGS_RELWITHDEBINFO_INIT "-O2 -g")
 
+SET (CMAKE_CXX_FLAGS_INIT                "-Wall")
+SET (CMAKE_CXX_FLAGS_DEBUG_INIT          "-g")
+SET (CMAKE_CXX_FLAGS_MINSIZEREL_INIT     "-Os -DNDEBUG")
+SET (CMAKE_CXX_FLAGS_RELEASE_INIT        "-O3 -DNDEBUG")
+SET (CMAKE_CXX_FLAGS_RELWITHDEBINFO_INIT "-O2 -g")
+"""
+                )
+            cmake_args += ["-DCMAKE_USER_MAKE_RULES_OVERRIDE="+cmake_override_file]
         # build package
         os.makedirs(package_build_path, exist_ok=True)
         with chdir(package_build_path):
@@ -448,6 +465,10 @@ endian = 'little'
                 prepend_env(env, "ASFLAGS", arch_flags)
             for var in ["CFLAGS", "CXXFLAGS", "LDFLAGS"]:
                 prepend_env(env, var, arch_flags)
+        elif platform.system() == "Windows":
+            # Use clang as gcc has issues https://github.com/msys2/MINGW-packages/issues/11712
+            env["CC"] = "clang"
+            env["CXX"] = "clang++"
 
         return env
 

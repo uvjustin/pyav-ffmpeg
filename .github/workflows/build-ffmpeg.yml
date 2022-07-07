@@ -37,11 +37,11 @@ jobs:
         run: |
           brew update
           brew install pkg-config
-          brew unlink gettext libidn2 libpng libtiff libunistring unbound
+          brew unlink brotli gettext libidn2 libpng libtiff libunistring little-cms2 unbound zstd
       - uses: msys2/setup-msys2@v2
         if: matrix.os == 'windows-latest'
         with:
-          install: base-devel mingw-w64-x86_64-gcc mingw-w64-x86_64-nasm
+          install: base-devel mingw-w64-x86_64-pkg-config mingw-w64-x86_64-lld mingw-w64-x86_64-clang mingw-w64-x86_64-nasm
           path-type: inherit
       - name: Build FFmpeg
         env:

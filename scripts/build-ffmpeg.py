@@ -72,7 +72,7 @@ if not os.path.exists(output_tarball):
         builder.build(
             Package(
                 name="nasm",
-                source_url="https://www.nasm.us/pub/nasm/releasebuilds/2.14.02/nasm-2.14.02.tar.bz2",
+                source_url="https://www.nasm.us/pub/nasm/releasebuilds/2.15.05/nasm-2.15.05.tar.bz2",
             ),
             for_builder=True,
         )
@@ -110,32 +110,33 @@ if not os.path.exists(output_tarball):
         Package(
             name="xml2",
             requires=["xz"],
-            source_url="https://download.gnome.org/sources/libxml2/2.9/libxml2-2.9.13.tar.xz",
+            source_url="https://download.gnome.org/sources/libxml2/2.9/libxml2-2.9.14.tar.xz",
             build_arguments=["--without-python"],
         ),
         Package(
             name="unistring",
-            source_url="https://ftp.gnu.org/gnu/libunistring/libunistring-0.9.10.tar.gz",
+            source_url="https://ftp.gnu.org/gnu/libunistring/libunistring-1.0.tar.xz",
         ),
         Package(
             name="freetype",
-            requires=["png"],
-            source_url="https://download.savannah.gnu.org/releases/freetype/freetype-2.10.1.tar.gz",
+            requires=["cmake", "png"],
+            source_url="https://mirror.ossplanet.net/nongnu/freetype/freetype-2.12.1.tar.xz",
+            build_system="cmake",
         ),
         Package(
             name="fontconfig",
             requires=["freetype", "xml2"],
-            source_url="https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.13.1.tar.bz2",
+            source_url="https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.14.0.tar.xz",
             build_arguments=["--disable-nls", "--enable-libxml2"],
         ),
         Package(
             name="fribidi",
-            source_url="https://github.com/fribidi/fribidi/releases/download/v1.0.11/fribidi-1.0.11.tar.xz",
+            source_url="https://github.com/fribidi/fribidi/releases/download/v1.0.12/fribidi-1.0.12.tar.xz",
         ),
         Package(
             name="harfbuzz",
             requires=["freetype"],
-            source_url="https://github.com/harfbuzz/harfbuzz/releases/download/4.1.0/harfbuzz-4.1.0.tar.xz",
+            source_url="https://github.com/harfbuzz/harfbuzz/releases/download/4.4.1/harfbuzz-4.4.1.tar.xz",
             build_arguments=[
                 "--with-cairo=no",
                 "--with-chafa=no",
@@ -148,7 +149,7 @@ if not os.path.exists(output_tarball):
         Package(
             name="nettle",
             requires=["gmp"],
-            source_url="https://ftp.gnu.org/gnu/nettle/nettle-3.7.3.tar.gz",
+            source_url="https://ftp.gnu.org/gnu/nettle/nettle-3.8.tar.gz",
             build_arguments=["--disable-documentation"],
             # build randomly fails with "*** missing separator.  Stop."
             build_parallel=False,
@@ -156,7 +157,7 @@ if not os.path.exists(output_tarball):
         Package(
             name="gnutls",
             requires=["nettle", "unistring"],
-            source_url="https://www.gnupg.org/ftp/gcrypt/gnutls/v3.7/gnutls-3.7.3.tar.xz",
+            source_url="https://www.gnupg.org/ftp/gcrypt/gnutls/v3.7/gnutls-3.7.6.tar.xz",
             build_arguments=[
                 "--disable-cxx",
                 "--disable-doc",
@@ -177,8 +178,7 @@ if not os.path.exists(output_tarball):
         Package(
             name="aom",
             requires=["cmake"],
-            source_url="https://storage.googleapis.com/aom-releases/libaom-3.2.0.tar.gz",
-            source_strip_components=0,
+            source_url="https://storage.googleapis.com/aom-releases/libaom-3.4.0.tar.gz",
             build_system="cmake",
             build_arguments=[
                 "-DENABLE_DOCS=0",
@@ -191,12 +191,12 @@ if not os.path.exists(output_tarball):
         Package(
             name="ass",
             requires=["fontconfig", "freetype", "fribidi", "harfbuzz", "nasm", "png"],
-            source_url="https://github.com/libass/libass/releases/download/0.15.2/libass-0.15.2.tar.gz",
+            source_url="https://github.com/libass/libass/releases/download/0.16.0/libass-0.16.0.tar.xz",
         ),
         Package(
             name="bluray",
             requires=["fontconfig"],
-            source_url="https://download.videolan.org/pub/videolan/libbluray/1.1.2/libbluray-1.1.2.tar.bz2",
+            source_url="http://download.videolan.org/pub/videolan/libbluray/1.3.1/libbluray-1.3.1.tar.bz2",
             build_arguments=["--disable-bdjava-jar"],
         ),
         Package(
@@ -211,7 +211,7 @@ if not os.path.exists(output_tarball):
         ),
         Package(
             name="ogg",
-            source_url="http://downloads.xiph.org/releases/ogg/libogg-1.3.5.tar.gz",
+            source_url="http://downloads.xiph.org/releases/ogg/libogg-1.3.5.tar.xz",
         ),
         Package(
             name="opencore-amr",
@@ -222,18 +222,18 @@ if not os.path.exists(output_tarball):
         Package(
             name="openjpeg",
             requires=["cmake"],
-            source_filename="openjpeg-2.4.0.tar.gz",
-            source_url="https://github.com/uclouvain/openjpeg/archive/v2.4.0.tar.gz",
+            source_filename="openjpeg-2.5.0.tar.gz",
+            source_url="https://github.com/uclouvain/openjpeg/archive/v2.5.0.tar.gz",
             build_system="cmake",
         ),
         Package(
             name="opus",
             source_url="https://archive.mozilla.org/pub/opus/opus-1.3.1.tar.gz",
-            build_arguments=["--disable-extra-programs"],
+            build_arguments=["--disable-extra-programs", "--disable-doc"],
         ),
         Package(
             name="speex",
-            source_url="http://downloads.xiph.org/releases/speex/speex-1.2.0.tar.gz",
+            source_url="http://downloads.xiph.org/releases/speex/speex-1.2.1.tar.gz",
             build_arguments=["--disable-binaries"],
         ),
         Package(
@@ -248,8 +248,8 @@ if not os.path.exists(output_tarball):
         ),
         Package(
             name="vpx",
-            source_filename="vpx-1.11.0.tar.gz",
-            source_url="https://github.com/webmproject/libvpx/archive/v1.11.0.tar.gz",
+            source_filename="vpx-1.12.0.tar.gz",
+            source_url="https://github.com/webmproject/libvpx/archive/v1.12.0.tar.gz",
             build_arguments=[
                 "--disable-examples",
                 "--disable-tools",
@@ -259,7 +259,7 @@ if not os.path.exists(output_tarball):
         Package(
             name="theora",
             requires=["vorbis"],
-            source_url="http://downloads.xiph.org/releases/theora/libtheora-1.1.1.tar.gz",
+            source_url="http://downloads.xiph.org/releases/theora/libtheora-1.1.1.tar.xz",
             build_arguments=["--disable-examples", "--disable-spec"],
         ),
         Package(
@@ -276,7 +276,7 @@ if not os.path.exists(output_tarball):
         Package(
             name="xvid",
             requires=["nasm"],
-            source_url="https://downloads.xvid.com/downloads/xvidcore-1.3.7.tar.gz",
+            source_url="https://downloads.xvid.com/downloads/xvidcore-1.3.7.tar.bz2",
             source_dir="build/generic",
             build_dir="build/generic",
         ),
